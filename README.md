@@ -2,7 +2,7 @@
 
 ## Simple logging with different verbosity levels
 
-The same API as stdlib has logger, coloured records.
+The same API as stdlib logger has, coloured records.
 
 `go get github.com/gelfand/log`
 
