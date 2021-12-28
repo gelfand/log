@@ -1,4 +1,4 @@
-//go:build !go1.18
+//go:build go1.18
 
 package log
 
@@ -79,25 +79,25 @@ func (lvl logLvl) reset() string {
 // Logger is an interface type which represents a logger.
 type Logger interface {
 	// Debug is the debug level log method.
-	Debug(arg interface{})
+	Debug(arg any)
 	// Debugf the same as Debug except formats string with provided arguments.
-	Debugf(format string, args ...interface{})
+	Debugf(format string, args ...any)
 	// Info is the info level log method.
-	Info(arg interface{})
+	Info(arg any)
 	// Infof the same as Info except formats string with provided arguments.
-	Infof(format string, args ...interface{})
+	Infof(format string, args ...any)
 	// Warn is the warn level log method.
-	Warn(arg interface{})
+	Warn(arg any)
 	// Warnf the same as Warn except formats string with provided arguments.
-	Warnf(format string, args ...interface{})
+	Warnf(format string, args ...any)
 	// Error is the error level log method.
-	Error(arg interface{})
+	Error(arg any)
 	// Errorf the same as Error except formats string with provided arguments.
-	Errorf(format string, args ...interface{})
+	Errorf(format string, args ...any)
 	// Fatal is the fatal level log method.
-	Fatal(arg interface{})
+	Fatal(arg any)
 	// Fatalf the same as Fatal except formats string with provided arguments.
-	Fatalf(format string, args ...interface{})
+	Fatalf(format string, args ...any)
 }
 
 // Log is the implementation of the Logger interface.
@@ -116,114 +116,114 @@ func New(w io.Writer) Logger {
 var rootLogger = New(os.Stderr)
 
 // Debug writes debug record.
-func (l *Log) Debug(arg interface{}) {
+func (l *Log) Debug(arg any) {
 	fmt.Fprint(l.w, doLog(lvlDebug, arg))
 }
 
 // Debugf writes a Debug record.
-func (l *Log) Debugf(format string, args ...interface{}) {
+func (l *Log) Debugf(format string, args ...any) {
 	fmt.Fprint(l.w, logf(lvlDebug, format, args))
 }
 
 // Info writes info record.
-func (l *Log) Info(arg interface{}) {
+func (l *Log) Info(arg any) {
 	fmt.Fprint(l.w, doLog(lvlInfo, arg))
 }
 
 // Infof is the same as Info except formats string with provided arguments.
-func (l *Log) Infof(format string, args ...interface{}) {
+func (l *Log) Infof(format string, args ...any) {
 	fmt.Fprint(l.w, logf(lvlInfo, format, args))
 }
 
 // Warn writes warning record.
-func (l *Log) Warn(arg interface{}) {
+func (l *Log) Warn(arg any) {
 	fmt.Fprint(l.w, doLog(lvlWarn, arg))
 }
 
 // Warnf is the same as Warn except formats string with provided arguments.
-func (l *Log) Warnf(format string, args ...interface{}) {
+func (l *Log) Warnf(format string, args ...any) {
 	fmt.Fprint(l.w, logf(lvlWarn, format, args))
 }
 
 // Erorr is the error level log method.
-func (l *Log) Error(arg interface{}) {
+func (l *Log) Error(arg any) {
 	fmt.Fprint(l.w, doLog(lvlError, arg))
 }
 
 // Erorrf is the same as Error except formats string with provided arguments.
-func (l *Log) Errorf(format string, args ...interface{}) {
+func (l *Log) Errorf(format string, args ...any) {
 	fmt.Fprint(l.w, logf(lvlError, format, args))
 }
 
 // Fatal is the fatal level log method.
-func (l *Log) Fatal(arg interface{}) {
+func (l *Log) Fatal(arg any) {
 	fmt.Fprint(l.w, doLog(lvlFatal, arg))
 	die()
 }
 
 // Fatalf is the same as Fatal except formats string with provided arguments.
-func (l *Log) Fatalf(format string, args ...interface{}) {
+func (l *Log) Fatalf(format string, args ...any) {
 	fmt.Fprint(l.w, logf(lvlFatal, format, args))
 	die()
 }
 
 // Info writes info record.
-func Info(arg interface{}) {
+func Info(arg any) {
 	rootLogger.Info(arg)
 }
 
 // Infof is the same as Info except formats string with provided arguments.
-func Infof(format string, args ...interface{}) {
+func Infof(format string, args ...any) {
 	rootLogger.Infof(format, args...)
 }
 
 // Warn writes warning record.
-func Warn(arg interface{}) {
+func Warn(arg any) {
 	rootLogger.Warn(arg)
 }
 
 // Warnf is the same as Warn except formats string with provided arguments.
-func Warnf(format string, args ...interface{}) {
+func Warnf(format string, args ...any) {
 	rootLogger.Warnf(format, args...)
 }
 
 // Error writes error record.
-func Error(arg interface{}) {
+func Error(arg any) {
 	rootLogger.Error(arg)
 }
 
 // Errorf is the same as Error except formats string with provided arguments.
-func Errorf(format string, args ...interface{}) {
+func Errorf(format string, args ...any) {
 	rootLogger.Errorf(format, args...)
 }
 
 // Debug writes debug record.
-func Debug(arg interface{}) {
+func Debug(arg any) {
 	rootLogger.Debug(arg)
 }
 
 // Debugf is the same as Debug except formats string with provided arguments.
-func Debugf(format string, args ...interface{}) {
+func Debugf(format string, args ...any) {
 	rootLogger.Debugf(format, args...)
 }
 
 // Fatal is the fatal level log method.
-func Fatal(arg interface{}) {
+func Fatal(arg any) {
 	rootLogger.Fatal(arg)
 }
 
 // Fatalf is the same as Fatal except formats string with provided arguments.
-func Fatalf(format string, args ...interface{}) {
+func Fatalf(format string, args ...any) {
 	rootLogger.Fatalf(format, args...)
 }
 
 // logf is a helper function for formatting log record.
-func logf(lvl logLvl, format string, a []interface{}) string {
+func logf(lvl logLvl, format string, a []any) string {
 	return doLog(lvl, fmt.Sprintf(format, a...))
 }
 
 // doLog is a helper function for logging.
-func doLog(lvl logLvl, arg interface{}) string {
+func doLog(lvl logLvl, arg any) string {
 	record := lvl.color() + lvl.String() + lvl.reset()
 
 	// Add time.
