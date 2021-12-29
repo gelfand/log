@@ -230,7 +230,7 @@ func doLog(lvl logLvl, arg any) string {
 	record += "[" + getTime() + "] "
 	// Format.
 	record += fmt.Sprint(arg)
-	record += "\n" + reset
+	record += "\n"
 
 	return record
 }
